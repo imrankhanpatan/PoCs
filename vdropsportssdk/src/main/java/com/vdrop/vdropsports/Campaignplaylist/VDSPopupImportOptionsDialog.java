@@ -3,16 +3,20 @@ package com.vdrop.vdropsports.Campaignplaylist;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -37,6 +41,7 @@ import com.vdrop.vdropsports.utils.VDSCompressVideoTask;
 import com.vdrop.vdropsports.utils.VDSPermissionUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -163,9 +168,15 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
     public void recordVideoFromCamera(){
         Intent vdsCamera = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         File video_file = getOutputMediaFile(MEDIA_TYPE_VIDEO);
-        String authorities = getActivity().getApplicationContext().getPackageName()+ ".fileprovider";
-        Uri video_uri = FileProvider.getUriForFile(getActivity(),authorities,video_file);
-        vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT,video_uri);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            String authorities = getActivity().getApplicationContext().getPackageName()+ ".fileprovider";
+            Uri video_uri = FileProvider.getUriForFile(getActivity(),authorities,video_file);
+            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT,video_uri);
+        }else {
+            Uri video_marsh = Uri.fromFile(video_file);
+            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT,video_marsh);
+        }
         vdsCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
         vdsCamera.putExtra(MediaStore.EXTRA_DURATION_LIMIT,30);
         startActivityForResult(vdsCamera,VIDEO_REQUEST_VALUE);
@@ -196,8 +207,9 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
                       Uri  videoFilePath = data.getData();
                         Log.i("videoFilePath",""+videoFilePath);
                         File file = new File(videoFilePath.getPath());
+                        Log.i("FILE_PATH",""+file);
+                        getDialog().dismiss();
                         createCampaignUser(file,campaignID);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -258,5 +270,10 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
         return mediaFile;
     }
+
+
+//    content://sportsapp.com.sportsapp.fileprovider/external_files/DCIM/Vdrop%20Sports/VID_20170628_144035.mp4----Nougat
+
+//    file:///storage/emulated/0/DCIM/Vdrop%20Sports/VID_20170628_145857.mp4--marshmallow
 
 }
