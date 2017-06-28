@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,9 +101,11 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         vdsDiscoverActivity = new VDSDiscoverActivity();
         detector = new VDSGestureDetection(this, this);
         if (!haveNetworkConnection()){
+            customToastMessage();
             showProgress();
+
         }else{
-            hideProgress();
+           hideProgress();
         }
         vdsLLLikeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +144,6 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
                             Log.d("VIDEO_CURRENT_POSITION", "" + stopPosition);
                             vdsVideoView.pause();
                             vdsDiscoverActivity.setPosition(stopPosition, vdsVideoView);
-
                             profileDialog = new VDSPopupOptionsDialog();
                             profileDialog.setVideo(stopPosition, vdsVideoView);
                             profileDialog.show(fragmentManager, "frag");
@@ -230,16 +233,22 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
                 vdsLLContainer.getChildAt(videoIndex).setBackgroundColor(getResources()
                         .getColor(R.color.colorLine));
                 i++;
-                if (i < size) {
-                    vdsVideoView.setVideoURI(Uri.parse(videoList.get(i).getStream()));
-                    vdsLLContainer.getChildAt(i * 2).setBackgroundColor(Color.WHITE);
-                    videoIndex = i * 2;
-                    vdsVideoView.start();
+                if (!haveNetworkConnection()){
+                    customToastMessage();
+                    showProgress();
+                }else {
+                    hideProgress();
+                    if (i < size) {
+                        vdsVideoView.setVideoURI(Uri.parse(videoList.get(i).getStream()));
+                        vdsLLContainer.getChildAt(i * 2).setBackgroundColor(Color.WHITE);
+                        videoIndex = i * 2;
+                        vdsVideoView.start();
+                    }
                 }
+
             }
         });
     }
-
     public void addIndicator() {
         LinearLayout.LayoutParams indicatorParams = new LinearLayout.LayoutParams(
                 (screenwidth / videoList.size()), ViewGroup.LayoutParams.MATCH_PARENT);
@@ -253,7 +262,6 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         vdsLLContainer.addView(splitter, splitterParams);
         indicatorList.add(indicator);
     }
-
     public void playVideo(String url) {
         Uri uri = Uri.parse(url);
         vdsVideoView.setVideoURI(uri);
@@ -264,18 +272,14 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
             vdsLLContainer.getChildAt(videoIndex).setBackgroundColor(Color.WHITE);
         }
     }
-
     boolean isDialogOpen = false;
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.vds_iv_close_video) {
             finish();
         }
-
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -376,17 +380,17 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         hideProgress();
         Log.i("VALUE_RIGHT", "" + position);
     }
-    private void showProgress() {
+    public void showProgress() {
         vdsProgressBar.setVisibility(View.VISIBLE);
     }
-    private void hideProgress() {
+    public void hideProgress() {
         vdsProgressBar.setVisibility(View.GONE);
     }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
-    private boolean haveNetworkConnection() {
+    public boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
 
@@ -401,6 +405,17 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public void customToastMessage(){
+        LayoutInflater li = getLayoutInflater();
+        View vdsLayout = li.inflate(R.layout.vds_custom_toast,(ViewGroup)findViewById(R.id.custom_toast_layout));
+
+        Toast vdsToast = new Toast(getApplicationContext());
+        vdsToast.setGravity(Gravity.BOTTOM,0,0);
+        vdsToast.setDuration(Toast.LENGTH_LONG);
+        vdsToast.setView(vdsLayout);
+        vdsToast.show();
     }
 
 }

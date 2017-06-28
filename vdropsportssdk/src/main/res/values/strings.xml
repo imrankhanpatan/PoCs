@@ -30,4 +30,6 @@
     <string name="share">Share</string>
     <string name="facebook">Facebook</string>
     <string name="twitter_share">Twitter</string>
+    <string name="network_disconnected">Network Disconnected...Please Enable Network</string>
+    <string name="toast">Network Disconnected</string>
 </resources>
