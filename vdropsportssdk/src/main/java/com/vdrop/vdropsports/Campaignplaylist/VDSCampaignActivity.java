@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.vdrop.vdropsports.R;
@@ -95,6 +98,11 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         vdsRLContainer.setOnClickListener(this);
         vdsDiscoverActivity = new VDSDiscoverActivity();
         detector = new VDSGestureDetection(this, this);
+        if (!haveNetworkConnection()){
+            showProgress();
+        }else{
+            hideProgress();
+        }
         vdsLLLikeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,25 +132,30 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         vdsRLContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (vdsVideoView.isPlaying()) {
-                    Log.d("TOUCH", "OPEN");
-                    if (!isDialogOpen) {
-                        stopPosition = vdsVideoView.getCurrentPosition();
-                        Log.d("VIDEO_CURRENT_POSITION", "" + stopPosition);
-                        vdsVideoView.pause();
-                        vdsDiscoverActivity.setPosition(stopPosition, vdsVideoView);
+                try {
+                    if (vdsVideoView.isPlaying()) {
+                        Log.d("TOUCH", "OPEN");
+                        if (!isDialogOpen) {
+                            stopPosition = vdsVideoView.getCurrentPosition();
+                            Log.d("VIDEO_CURRENT_POSITION", "" + stopPosition);
+                            vdsVideoView.pause();
+                            vdsDiscoverActivity.setPosition(stopPosition, vdsVideoView);
 
-                        profileDialog = new VDSPopupOptionsDialog();
-                        profileDialog.setVideo(stopPosition, vdsVideoView);
-                        profileDialog.show(fragmentManager, "frag");
+                            profileDialog = new VDSPopupOptionsDialog();
+                            profileDialog.setVideo(stopPosition, vdsVideoView);
+                            profileDialog.show(fragmentManager, "frag");
+                        }
+                    } else {
+                        Log.d("TOUCH", "CLOSE");
+                        profileDialog.dismiss();
+                        Log.d("VIDEO_CLOSE_POSITION", "" + stopPosition);
+                        vdsVideoView.seekTo(stopPosition);
+                        vdsVideoView.start();
                     }
-                } else {
-                    Log.d("TOUCH", "CLOSE");
-                    profileDialog.dismiss();
-                    Log.d("VIDEO_CLOSE_POSITION", "" + stopPosition);
-                    vdsVideoView.seekTo(stopPosition);
-                    vdsVideoView.start();
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
             }
         });
 
@@ -294,16 +307,13 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
             vdsVideoView.seekTo(stopPosition);
             vdsVideoView.start();
         }
-
     }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent me) {
         // Call onTouchEvent of SimpleGestureFilter class
         this.detector.onTouchEvent(me);
         return super.dispatchTouchEvent(me);
     }
-
     @Override
     public void onDismiss() {
         if (!isDialogOpen) {
@@ -311,13 +321,11 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
             onStart();
         }
     }
-
     @Override
     public void onVideoPause() {
         stopPosition = vdsVideoView.getCurrentPosition();
         vdsVideoView.pause();
     }
-
     @Override
     public void onSwipe(int direction) {
         String str = "";
@@ -338,18 +346,26 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case VDSGestureDetection.SWIPE_UP:
-                vdsPopShareDialog = new VDSPopupShareDialog();
-                vdsPopShareDialog.show(fragmentManager,"Share");
-
+                try {
+                    vdsPopShareDialog = new VDSPopupShareDialog();
+                    vdsPopShareDialog.show(fragmentManager,"Share");
+                    onVideoPause();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             case VDSGestureDetection.SWIPE_DOWN:
-                vdsPopShareDialog.dismiss();
+                try {
+                    onDismiss();
+                    vdsPopShareDialog.dismiss();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 break;
-
         }
     }
-
     public void playSelectedVideo(int position) {
         vdsLLContainer.getChildAt(videoIndex).setBackgroundColor(getResources()
                 .getColor(R.color.colorLine));
@@ -360,19 +376,31 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
         hideProgress();
         Log.i("VALUE_RIGHT", "" + position);
     }
-
     private void showProgress() {
         vdsProgressBar.setVisibility(View.VISIBLE);
     }
-
     private void hideProgress() {
         vdsProgressBar.setVisibility(View.GONE);
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
 
 }

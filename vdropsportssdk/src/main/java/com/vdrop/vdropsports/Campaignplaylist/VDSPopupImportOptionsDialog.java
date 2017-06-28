@@ -117,7 +117,7 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
             }
         });
         VDSActivityManager = new VDSActivityManager(getActivity());
-        popupCallBack = (PopupCallBack)getActivity();
+        popupCallBack = (PopupCallBack) getActivity();
         if (!VDSPermissionUtils.checkPermissionStatus(getActivity())) {
             VDSPermissionUtils.EnableRuntimePermission(getActivity());
         }
@@ -133,12 +133,14 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
            /* VDSVideoCaptureActivity.openVideoActivity(getActivity());
             Toast.makeText(activity, "Work in Progress", Toast.LENGTH_SHORT).show();*/
             int rc = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-            int sdCard = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int sdCard = ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (sdCard == PackageManager.PERMISSION_GRANTED) {
-                int recordAudio = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO);
+                int recordAudio = ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.RECORD_AUDIO);
                 if (recordAudio == PackageManager.PERMISSION_GRANTED) {
                     if (rc == PackageManager.PERMISSION_GRANTED) {
-                       recordVideoFromCamera();
+                        recordVideoFromCamera();
                     } else {
                         VDSPermissionUtils.requestCameraPermission(getActivity());
                     }
@@ -152,9 +154,9 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
         }
         if (Id == R.id.vds_tv_import_photos) {
-            if (VDSPermissionUtils.checkPermissionStatus(getActivity())){
+            if (VDSPermissionUtils.checkPermissionStatus(getActivity())) {
                 pickVideoFromGallery();
-            }else {
+            } else {
                 Toast.makeText(activity, "Permission not enabled", Toast.LENGTH_LONG).show();
             }
 
@@ -165,30 +167,27 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
     }
 
-    public void recordVideoFromCamera(){
+    public void recordVideoFromCamera() {
         Intent vdsCamera = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         File video_file = getOutputMediaFile(MEDIA_TYPE_VIDEO);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-            String authorities = getActivity().getApplicationContext().getPackageName()+ ".fileprovider";
-            Uri video_uri = FileProvider.getUriForFile(getActivity(),authorities,video_file);
-            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT,video_uri);
-        }else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            String authorities = getActivity().getApplicationContext().getPackageName() + ".fileprovider";
+            Uri video_uri = FileProvider.getUriForFile(getActivity(), authorities, video_file);
+            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT, video_uri);
+        } else {
             Uri video_marsh = Uri.fromFile(video_file);
-            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT,video_marsh);
+            vdsCamera.putExtra(MediaStore.EXTRA_OUTPUT, video_marsh);
         }
-        vdsCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
-        vdsCamera.putExtra(MediaStore.EXTRA_DURATION_LIMIT,30);
-        startActivityForResult(vdsCamera,VIDEO_REQUEST_VALUE);
+        vdsCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        vdsCamera.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+        startActivityForResult(vdsCamera, VIDEO_REQUEST_VALUE);
     }
-
-
     public void pickVideoFromGallery() {
         Intent videoIntent = new Intent(Intent.ACTION_GET_CONTENT);
         videoIntent.setType(videoFormat);
         startActivityForResult(videoIntent, RESULT_LOAD_VIDEO);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -201,34 +200,33 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else {
-                if (requestCode == VIDEO_REQUEST_VALUE){
+            } else {
+                if (requestCode == VIDEO_REQUEST_VALUE) {
                     try {
-                      Uri  videoFilePath = data.getData();
-                        Log.i("videoFilePath",""+videoFilePath);
+                        Uri videoFilePath = data.getData();
+                        Log.i("videoFilePath", "" + videoFilePath);
                         File file = new File(videoFilePath.getPath());
-                        Log.i("FILE_PATH",""+file);
+                        Log.i("FILE_PATH", "" + file);
                         getDialog().dismiss();
-                        createCampaignUser(file,campaignID);
+                        createCampaignUser(file, campaignID);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     Toast.makeText(activity, "VIDEO Captured Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
-
-    private void getFilePath(Uri filepath){
-        File file = FileUtils.getFile(getActivity(),filepath);
+    private void getFilePath(Uri filepath) {
+        File file = FileUtils.getFile(getActivity(), filepath);
         getDialog().dismiss();
         createCampaignUser(file, campaignID);
     }
 
     private void createCampaignUser(File filePath, String campaignId) {
         Log.i("CAMPAIGN_ID", "" + campaignId);
-        Log.i("CAMPAIGN_FILE_PATH",""+filePath);
+        Log.i("CAMPAIGN_FILE_PATH", "" + filePath);
         VDSActivityManager.onCreateVideo(campaignId, filePath, new ActivityCallback() {
             @Override
             public void onSuccess(String success, Map map) {
@@ -245,11 +243,11 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
             }
         });
-
     }
-
-    private static File getOutputMediaFile(int type){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),Config.IMAGE_DIRECTORY_NAME);
+    private static File getOutputMediaFile(int type) {
+        File mediaStorageDir = new File(Environment.
+                getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                Config.IMAGE_DIRECTORY_NAME);
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d("", "Oops! Failed create "
@@ -270,10 +268,5 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
         return mediaFile;
     }
-
-
-//    content://sportsapp.com.sportsapp.fileprovider/external_files/DCIM/Vdrop%20Sports/VID_20170628_144035.mp4----Nougat
-
-//    file:///storage/emulated/0/DCIM/Vdrop%20Sports/VID_20170628_145857.mp4--marshmallow
 
 }
