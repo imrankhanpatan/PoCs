@@ -2,9 +2,12 @@ package com.vdrop.vdropsports.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.vdrop.vdropsports.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +18,24 @@ import java.util.Properties;
  */
 
 public class Utils {
+
+    private static int sTheme;
+    public final static int THEME_MATERIAL_LIGHT=0;
+
+    public static void changeToTheme(Activity activity,int theme){
+        sTheme = theme;
+        activity.finish();
+        activity.startActivity(new Intent(activity,activity.getClass()));
+    }
+
+    public static void onActivityCreateSetTheme(Activity activity){
+        switch (sTheme){
+            default:
+            case THEME_MATERIAL_LIGHT:
+                activity.setTheme(R.style.Theme_Material_Light);
+                break;
+        }
+    }
 
     public static String getProperty(String url, Context context) throws IOException {
         Properties properties = new Properties();
@@ -65,6 +86,7 @@ public class Utils {
             return null;
         }
     }
+
 
 
 }

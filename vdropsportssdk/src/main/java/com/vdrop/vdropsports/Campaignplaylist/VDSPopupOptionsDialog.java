@@ -18,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.vdrop.vdropsports.R;
 import com.vdrop.vdropsports.application.App;
 import com.vdrop.vdropsports.callback.PopupCallBack;
 import com.vdrop.vdropsports.discover.VDSDiscoverActivity;
+import com.vdrop.vdropsports.utils.Utils;
 
 /**
  * Created by dennis on 26/5/17.
@@ -120,16 +122,32 @@ public class VDSPopupOptionsDialog extends DialogFragment implements View.OnClic
         int Id = v.getId();
 
         if (Id == R.id.vds_iv_share) {
-            vdsPopupShareDialog = new VDSPopupShareDialog();
-            vdsPopupShareDialog.show(fragmentManger,"PopupShareDialog");
+            try{
+                if (!activity.haveNetworkConnection()){
+                    activity.customToastMessage();
+                }else {
+                    vdsPopupShareDialog = new VDSPopupShareDialog();
+                    vdsPopupShareDialog.show(fragmentManger,"PopupShareDialog");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
         if (Id == R.id.vds_iv_video_gallery) {
             VDSDiscoverActivity.openDiscoverActivity(getActivity());
         }
         if (Id == R.id.vds_rl_add_video) {
-            vdsPVSignup = new VDSPopupVideoSignupDialog();
-            vdsPVSignup.show(fragmentManger, "PopupSignupDialog");
-            getDialog().dismiss();
+            if (!activity.haveNetworkConnection()){
+                activity.customToastMessage();
+                activity.showProgress();
+            }else {
+                activity.hideProgress();
+                vdsPVSignup = new VDSPopupVideoSignupDialog();
+                vdsPVSignup.show(fragmentManger, "PopupSignupDialog");
+                getDialog().dismiss();
+            }
+
         }
     }
 

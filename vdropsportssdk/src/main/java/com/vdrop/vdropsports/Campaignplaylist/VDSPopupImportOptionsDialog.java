@@ -130,8 +130,6 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
 
         int Id = v.getId();
         if (Id == R.id.vds_tv_record) {
-           /* VDSVideoCaptureActivity.openVideoActivity(getActivity());
-            Toast.makeText(activity, "Work in Progress", Toast.LENGTH_SHORT).show();*/
             int rc = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
             int sdCard = ActivityCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);

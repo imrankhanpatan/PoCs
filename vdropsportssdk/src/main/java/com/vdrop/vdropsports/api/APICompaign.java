@@ -36,9 +36,6 @@ public class APICompaign {
     private String uploadUrl;
     private String createVideoId;
     private Context context;
-
-
-
     /**
      *
      * get campaign API integration
@@ -56,6 +53,7 @@ public class APICompaign {
             @Override
             public void onResponse(Call<Campaign> call, Response<Campaign> response) {
                 Log.i(TAG + "Response_code", "" + response.code());
+
                 if (response.isSuccessful()) {
                     Log.i(TAG + Constants.RESPONSE, Constants.EMPTY + response.body().get_id());
                     Map map = new HashMap();

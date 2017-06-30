@@ -393,7 +393,6 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
     public boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
-
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo[] netInfo = cm.getAllNetworkInfo();
         for (NetworkInfo ni : netInfo) {
@@ -410,7 +409,6 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
     public void customToastMessage(){
         LayoutInflater li = getLayoutInflater();
         View vdsLayout = li.inflate(R.layout.vds_custom_toast,(ViewGroup)findViewById(R.id.custom_toast_layout));
-
         Toast vdsToast = new Toast(getApplicationContext());
         vdsToast.setGravity(Gravity.BOTTOM,0,0);
         vdsToast.setDuration(Toast.LENGTH_LONG);

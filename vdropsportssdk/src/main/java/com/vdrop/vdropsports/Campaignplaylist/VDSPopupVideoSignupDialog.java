@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,6 +77,7 @@ public class VDSPopupVideoSignupDialog extends DialogFragment implements View.On
         vdsIVVideoadd  = (ImageView) view.findViewById(R.id.vds_iv_video_add);
         vdsBtnSignup.setOnClickListener(this);
         vdsIVVideoadd.setOnClickListener(this);
+        vdsTVBinfo.setOnClickListener(this);
         vdsTVSubtitle.setText(App.getInstance().getCampaign().getDescription());
         vdsTVUploadTitle.setText(App.getInstance().getCampaignName());
         fragmentManager = getActivity().getFragmentManager();
@@ -114,19 +116,32 @@ public class VDSPopupVideoSignupDialog extends DialogFragment implements View.On
 
         if (Id == R.id.vds_btn_signup){
 
-            vdsTVSubtitle.setVisibility(View.VISIBLE);
-            vdsBtnSignup.setVisibility(View.GONE);
-            vdsBtnContent.setVisibility(View.GONE);
-            vdsTVName.setVisibility(View.GONE);
-            vdsTVMembership.setVisibility(View.GONE);
-            vdsIVVideoadd.setVisibility(View.VISIBLE);
-            vdsTVBinfo.setVisibility(View.VISIBLE);
+            if (!activity.haveNetworkConnection()){
+                activity.customToastMessage();
+            }else {
+                vdsTVSubtitle.setVisibility(View.VISIBLE);
+                vdsBtnSignup.setVisibility(View.GONE);
+                vdsBtnContent.setVisibility(View.GONE);
+                vdsTVName.setVisibility(View.GONE);
+                vdsTVMembership.setVisibility(View.GONE);
+                vdsIVVideoadd.setVisibility(View.VISIBLE);
+                vdsTVBinfo.setVisibility(View.VISIBLE);
+            }
+
 
         }
         if (Id == R.id.vds_iv_video_add){
+            if (!activity.haveNetworkConnection()){
+                activity.customToastMessage();
+            }else {
+                vdsPIODialog = new VDSPopupImportOptionsDialog();
+                vdsPIODialog.show(fragmentManager,"PIODIALOG");
+            }
 
-            vdsPIODialog = new VDSPopupImportOptionsDialog();
-            vdsPIODialog.show(fragmentManager,"PIODIALOG");
+        }
+        if (Id == R.id.vds_tv_signgup_binfo){
+
+            VDSAdClickActivity.openAdsActivity(getActivity());
         }
 
     }

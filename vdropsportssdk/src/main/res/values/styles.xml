@@ -4,4 +4,22 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>
+
+    
+    <style name="text_large_wh">
+        <item name="android:textColor">#FF00FF</item>
+        <item name="android:textSize">@dimen/text_large_text_size</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#888</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="text_regular_wh">
+        <item name="android:textColor">@android:color/background_dark</item>
+        <item name="android:textSize">@dimen/text_regular_text_size</item>
+    </style>
+
+    <style name="page_background_wh">
+        <item name="android:background">@drawable/white_gray_gradient_background</item>
+    </style>
 </resources>

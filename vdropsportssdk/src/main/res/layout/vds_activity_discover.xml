@@ -11,22 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:weightSum="3">
 
         <ImageView
             android:id="@+id/vds_iv_discover_cancel"
             android:layout_width="50dp"
             android:layout_height="45dp"
-            android:src="@drawable/vds_discover_cancel_icon" />
+            android:src="@drawable/vds_discover_cancel_icon"
+            android:layout_weight="1"/>
         <TextView
             android:id="@+id/vds_tv_discover_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/vds_welcomesteveblake"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/vds_theme_select"
+            android:text="Theme"/>
+
     </LinearLayout>
 
     <View
