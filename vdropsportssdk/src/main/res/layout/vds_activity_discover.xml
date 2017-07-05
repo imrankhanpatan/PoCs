@@ -35,7 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/vds_theme_select"
-            android:text="Theme"/>
+            android:text="Theme"
+            android:background="@null"/>
 
     </LinearLayout>
 

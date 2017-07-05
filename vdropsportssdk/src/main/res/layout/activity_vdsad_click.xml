@@ -20,6 +20,7 @@
         android:src="@drawable/vdropimage"
         android:cropToPadding="false"
         android:scaleType="fitXY"
+        android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:background="#FFFFFF"/>
 </RelativeLayout>

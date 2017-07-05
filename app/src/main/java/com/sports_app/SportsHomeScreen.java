@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.vdrop.vdropsports.Campaignplaylist.VDSAWSActivity;
 import com.vdrop.vdropsports.Campaignplaylist.VDSCampaignActivity;
 
 import sportsapp.com.sportsapp.R;
@@ -26,8 +27,11 @@ public class SportsHomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), VDSCampaignActivity.class);
+                /*Intent intent = new Intent(v.getContext(), VDSAWSActivity.class);
 //                intent.putExtra("CAMPAIGN_ID","590ad782420e002f85701991");
+                startActivity(intent);*/
+
+                Intent intent = new Intent(v.getContext(), VDSCampaignActivity.class);
                 startActivity(intent);
 
             }

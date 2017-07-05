@@ -14,10 +14,13 @@ import com.vdrop.vdropsports.model.Playlist;
 import com.vdrop.vdropsports.utils.Constants;
 import com.vdrop.vdropsports.utils.Utils;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
 
 /**
  * Created by dennis on 29/5/17.
@@ -39,7 +42,7 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
 
-        Branch.getAutoInstance(this);
+     Branch.getAutoInstance(this);
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY),getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET)))

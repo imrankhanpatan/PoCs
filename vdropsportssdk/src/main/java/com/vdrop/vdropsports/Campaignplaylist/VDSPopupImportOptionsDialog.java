@@ -182,9 +182,11 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
         startActivityForResult(vdsCamera, VIDEO_REQUEST_VALUE);
     }
     public void pickVideoFromGallery() {
-        Intent videoIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        videoIntent.setType(videoFormat);
-        startActivityForResult(videoIntent, RESULT_LOAD_VIDEO);
+        if (!isCompressing) {
+            Intent videoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            videoIntent.setType(videoFormat);
+            startActivityForResult(videoIntent, RESULT_LOAD_VIDEO);
+        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -194,7 +196,7 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
                 try {
                     filePath = data.getData();
                     getFilePath(filePath);
-                    Log.i("FILE_PATH", "" + filePath);
+                    Log.i("GALLERY_FILE_PATH", "" + filePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -204,7 +206,7 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
                         Uri videoFilePath = data.getData();
                         Log.i("videoFilePath", "" + videoFilePath);
                         File file = new File(videoFilePath.getPath());
-                        Log.i("FILE_PATH", "" + file);
+                        Log.i("VIDEO_FILE_PATH", "" + file);
                         getDialog().dismiss();
                         createCampaignUser(file, campaignID);
                     } catch (Exception e) {
@@ -219,7 +221,40 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
     private void getFilePath(Uri filepath) {
         File file = FileUtils.getFile(getActivity(), filepath);
         getDialog().dismiss();
-        createCampaignUser(file, campaignID);
+        Log.i("PATH",""+file);
+        /*createCampaignUser(file, campaignID);*/
+
+       /* Uri fileUri = Uri.parse("file://"+file);
+        Log.i("FILE",""+fileUri);*/
+        compressAndUploadVideo(file);
+    }
+
+    private void compressAndUploadVideo(File path) {
+        try {
+            isCompressing=true;
+            String file = FileUtils.getPath(getActivity(),Uri.fromFile(path));
+            Log.i("FILE_EXTENSION",""+file);
+            vdsCompressVideoTask.compressVideo(file, new VDSCompressVideoTask.VideoCompressResponse() {
+                @Override
+                public void onCompressResponse(String response, String compressedFilePath) {
+
+                        isCompressing=true;
+                    if (response.equals(Constants.SUCCESS) && compressedFilePath != null &&
+                            !vdsCompressVideoTask.isCancelled()) {
+
+                        isCompressing = false;
+                        createCampaignUser(FileUtils.getFile(getActivity(),Uri.parse(compressedFilePath)),campaignID);
+                        dismiss();
+                    } else if (response.equals(Constants.FAILURE)) {
+                        isCompressing = false;
+                        dismiss();
+                    }
+                }
+
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void createCampaignUser(File filePath, String campaignId) {

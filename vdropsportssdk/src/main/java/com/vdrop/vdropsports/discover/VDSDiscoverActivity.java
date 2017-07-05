@@ -77,14 +77,14 @@ public class VDSDiscoverActivity extends AppCompatActivity implements View.OnCli
         vdsRVDiscoverList.setLayoutManager(mLayoutManager);
         vdsDRVAdapter = new VDSDiscoverRecyclerViewAdapter(this);
         getDiscoverlist(campaignId);
-        vdsTHSelect.setOnClickListener(new View.OnClickListener() {
+        /*vdsTHSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),VDSDiscoverActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
          vdsCampaignActivity = new VDSCampaignActivity();
         vdsIVDiscoverCancel.setOnClickListener(this);
 

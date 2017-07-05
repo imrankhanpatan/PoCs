@@ -94,4 +94,12 @@ public class VDSAdClickActivity extends AppCompatActivity {
     internetIntent.addCategory(Intent.CATEGORY_LAUNCHER);
     internetIntent.setClassName(packageName, className);
     startActivity(internetIntent);*/
+
+//    Share Dialog Code
+
+    /* Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, "Share This App"));*/
 }
