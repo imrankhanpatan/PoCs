@@ -19,6 +19,7 @@ public class SportsHomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       /* setContentView(R.layout.vds_activity_register);*/
         setContentView(R.layout.activity_sports_home_screen);
 
        vdsHomeScreen = (LinearLayout) findViewById(R.id.home_btn_sportsscreen);
@@ -26,10 +27,6 @@ public class SportsHomeScreen extends AppCompatActivity {
         vdsHomeScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*Intent intent = new Intent(v.getContext(), VDSAWSActivity.class);
-//                intent.putExtra("CAMPAIGN_ID","590ad782420e002f85701991");
-                startActivity(intent);*/
 
                 Intent intent = new Intent(v.getContext(), VDSCampaignActivity.class);
                 startActivity(intent);

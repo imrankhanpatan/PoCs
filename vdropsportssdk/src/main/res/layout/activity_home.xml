@@ -30,7 +30,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
-                    android:text="Back"
+                    android:text="@string/back"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -68,10 +68,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="85dp"
+                    android:layout_centerInParent="true"
                     android:background="@drawable/vds_white_border_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="30dp"
@@ -100,7 +100,8 @@
                 android:text="Share video"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:padding="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,11 +130,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:weightSum="5">
-
+                android:weightSum="3">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -147,36 +146,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text=" Send in your questions and well wishes for new Star"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="25dp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shared_video_background"
-                    android:text="Contribute"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text=" Upload your video and let the community vote your question"
                     android:textColor="@color/colorWhite"
                     android:textSize="18dp"
-                    android:textStyle="bold" />
-
+                    android:padding="9dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,8 +162,74 @@
                     android:text=" Steve will answer the best fan videos on Monday"
                     android:textColor="@color/colorWhite"
                     android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:padding="10dp" />
+
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Vote on fan videos for Steve to Answer"
+                    android:textColor="@color/colorOrange"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="The top 10 voted videos are sent to Steve to respond"
+                    android:textColor="@color/colorOrange"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/watch_vote_background"
+                    android:layout_marginTop="15dp"
+                    android:text="Watch and Vote"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shared_video_background"
+                    android:text="Contribute"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vds_recycle_view">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/vds_adds_recycle_view">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

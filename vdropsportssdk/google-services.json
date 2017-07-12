@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "270936950912",
+    "project_id": "vdropsportssdk-172911"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270936950912:android:b9222213609fc9e9",
+        "android_client_info": {
+          "package_name": "com.vdrop.vdropsports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270936950912-b62oi3u5fukqm70a6jjc35124in3lbu3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vdrop.vdropsports",
+            "certificate_hash": "ef79a16a9d1c0a7a9786712168af1269169e25be"
+          }
+        },
+        {
+          "client_id": "270936950912-2g858fdm2bi2hk6jtbtqp81aps1q68ol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSVowyDYQu4WnWt0p3n31mmQB8H50nSGc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

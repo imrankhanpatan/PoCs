@@ -237,11 +237,9 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
             vdsCompressVideoTask.compressVideo(file, new VDSCompressVideoTask.VideoCompressResponse() {
                 @Override
                 public void onCompressResponse(String response, String compressedFilePath) {
-
                         isCompressing=true;
                     if (response.equals(Constants.SUCCESS) && compressedFilePath != null &&
                             !vdsCompressVideoTask.isCancelled()) {
-
                         isCompressing = false;
                         createCampaignUser(FileUtils.getFile(getActivity(),Uri.parse(compressedFilePath)),campaignID);
                         dismiss();
@@ -252,6 +250,7 @@ public class VDSPopupImportOptionsDialog extends DialogFragment implements View.
                 }
 
             });
+            vdsCompressVideoTask.execute();
         }catch (Exception e){
             e.printStackTrace();
         }

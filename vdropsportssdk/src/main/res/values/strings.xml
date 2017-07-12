@@ -32,4 +32,10 @@
     <string name="twitter_share">Twitter</string>
     <string name="network_disconnected">Network Disconnected...Please Enable Network</string>
     <string name="toast">Network Disconnected</string>
+    <string name="loading">Loading</string>
+    <string name="back"><u>Back</u></string>
+    <string name="name_required">Name (Required)</string>
+    <string name="email_required">Email (Required)</string>
+    <string name="phone_optional">Phone (Optional)</string>
+    <string name="t_amp_c_s"><u><![CDATA[T&C\'s]]></u></string>
 </resources>

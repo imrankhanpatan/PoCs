@@ -189,7 +189,7 @@ public class VDSActivityManager {
          vdsIVDone = (ImageView)d.findViewById(R.id.vds_iv_upload_completed);
          vdsProgressBar.setProgressTintList(ColorStateList.valueOf(Color.BLUE));
          vdsProgressBar.setProgress(0);
-             d.show();
+         d.show();
 
 
          vdsTVClose.setOnClickListener(new View.OnClickListener() {

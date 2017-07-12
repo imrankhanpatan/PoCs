@@ -1,9 +1,10 @@
 package com.vdrop.vdropsports.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
+import android.util.Log;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -32,7 +33,7 @@ public class App extends Application {
     private static App mInstance;
     private ArrayList<Campaign> uploadCampaigns;
     private Playlist playlist;
-    private static final String VDS_FILES_DIR = "/PICTURES/";
+    private static final String VDS_FILES_DIR = "/DCIM/";
     private String campaignId;
     private String publishVideoId;
     private String campaignName;
@@ -42,14 +43,20 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
 
-     Branch.getAutoInstance(this);
+        Branch.getAutoInstance(this);
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY),getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET)))
+                .twitterAuthConfig(new TwitterAuthConfig(getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY), getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET)))
                 .debug(true)
                 .build();
         Twitter.initialize(config);
     }
+
+    /*@Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }*/
 
     public String getCampaignName() {
         return campaignName;

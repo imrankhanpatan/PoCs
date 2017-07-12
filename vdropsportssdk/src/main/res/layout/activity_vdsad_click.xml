@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_vdsad_click"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.vdrop.vdropsports.Campaignplaylist.VDSAdClickActivity">
 
-   <!-- <WebView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/vds_webview">
-
-    </WebView>-->
 
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:id="@+id/btn_mozilla"
         android:src="@drawable/vdropimage"
+        android:scaleType="fitCenter"
         android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:layout_centerInParent="true"
         android:adjustViewBounds="true"
         android:background="#FFFFFF"/>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vds_linear_proof"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vds_account_name"
+            android:text="Display Google Account Name"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vds_mail_name"
+            android:text="Display Email Here"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/vds_google_logout"
+            android:text="Log Out"/>
+
+    </LinearLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/vds_google_signin">
+    </com.google.android.gms.common.SignInButton>
+
+</LinearLayout>

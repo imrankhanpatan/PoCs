@@ -1,37 +1,55 @@
 package com.vdrop.vdropsports.Campaignplaylist;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.vdrop.vdropsports.R;
 
-public class VDSAdClickActivity extends AppCompatActivity {
+public class VDSAdClickActivity extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
 
-    private WebView vdsWv;
     private ImageButton btn_mozilla;
+    private TextView vdsBTAName,vdsBTEmailName;
+    private Button vdsGoogleLogOut;
+    private SignInButton vdsGoogleSignIn;
+    private GoogleApiClient googleApiClient;
+    private LinearLayout vdsLLContainer;
+    private static final int RC_SIGN_IN = 9001;
+    private ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vdsad_click);
-        /*vdsWv = (WebView)findViewById(R.id.vds_webview);
-        vdsWv.setWebViewClient(new MyBrowser());
-        vdsWv.setWebChromeClient(new WebChromeClient());
-        vdsWv.getSettings().setJavaScriptEnabled(true);
-        vdsWv.getSettings().setLoadsImagesAutomatically(true);
-        vdsWv.loadUrl("https://vdrop.test-app.link/b7p3OUv3kE");*/
+        vdsLLContainer =(LinearLayout)findViewById(R.id.vds_linear_proof);
         btn_mozilla = (ImageButton)findViewById(R.id.btn_mozilla);
+        vdsBTAName=(TextView)findViewById(R.id.vds_account_name);
+        vdsBTEmailName=(TextView)findViewById(R.id.vds_mail_name);
+        vdsGoogleLogOut=(Button)findViewById(R.id.vds_google_logout);
+        vdsGoogleSignIn=(SignInButton)findViewById(R.id.vds_google_signin);
+        vdsGoogleSignIn.setOnClickListener(this);
+        vdsGoogleLogOut.setOnClickListener(this);
+        vdsLLContainer.setVisibility(View.GONE);
         btn_mozilla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +69,14 @@ public class VDSAdClickActivity extends AppCompatActivity {
 
             }
         });
+
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
+                .build();
     }
 
 
@@ -60,46 +86,115 @@ public class VDSAdClickActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-
-    private class MyBrowser extends WebViewClient{
-        @Override
-        public boolean shouldOverrideUrlLoading (WebView view, WebResourceRequest request){
-          String url = request.getUrl().toString();
-            /*if (Uri.parse(url).getScheme().equals("vdrop")){
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    Activity host = (Activity) view.getContext();
-                    host.startActivity(intent);
-                    return true;
-                }catch (ActivityNotFoundException e){
-                    Uri uri = Uri.parse(url);
-                    view.loadUrl("http://play.google.com/store/apps/" +uri.getHost());
-                    return false;
-                }
-            }*/
-
-            return false;
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.vds_google_signin) {
+            signIn();
         }
+        if (i == R.id.vds_google_logout){
+            signOut();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+        Log.i("CONNECTION_Status",""+connectionResult);
 
     }
 
+    private void signIn(){
+            Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(intent,RC_SIGN_IN);
+    }
+
+    private void signOut(){
+
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                updateUI(false);
+            }
+        });
+    }
+    private void updateUI(boolean isLogin){
+        if (isLogin){
+            vdsLLContainer.setVisibility(View.VISIBLE);
+            vdsGoogleSignIn.setVisibility(View.GONE);
+        }else {
+            vdsLLContainer.setVisibility(View.GONE);
+            vdsGoogleSignIn.setVisibility(View.VISIBLE);
+        }
+    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN){
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            int statuscode = result.getStatus().getStatusCode();
+            Log.d("STATUS_CODE",""+result.getStatus());
+                handleResult(result);
 
-    //Opera Browser Code
-   /* String packageName = "com.opera.mini.android";
-    String className = "com.opera.mini.android.Browser";
-    Intent internetIntent = new Intent(Intent.ACTION_VIEW);
-    internetIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-    internetIntent.setClassName(packageName, className);
-    startActivity(internetIntent);*/
+        }
+    }
 
-//    Share Dialog Code
+    private void handleResult(GoogleSignInResult result){
+        Log.i("GOOGLE_SIGN_Result",""+result.isSuccess());
+        if (result.isSuccess()){
+            GoogleSignInAccount account = result.getSignInAccount();
+            String name = account.getGivenName();
+            String email = account.getEmail();
+            Log.i("NAME",""+name);
+            vdsBTAName.setText(name);
+            vdsBTEmailName.setText(email);
+            updateUI(true);
+        }else {
+            updateUI(false);
+        }
 
-    /* Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, url);
-                    sendIntent.setType("text/plain");
-                    startActivity(Intent.createChooser(sendIntent, "Share This App"));*/
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+
+            GoogleSignInResult result = opr.get();
+            handleResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
 }

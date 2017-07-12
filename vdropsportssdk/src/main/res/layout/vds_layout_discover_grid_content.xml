@@ -10,20 +10,93 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
-        <ImageView
-            android:layout_height="wrap_content"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:id="@+id/thumbnail1"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp"
-            />
-        <ImageView
-            android:id="@+id/thumbnail3"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/thumbnail1"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                />
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/play_button"
+                android:layout_gravity="center"
+               />
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/vote_background_orange"
+                android:layout_gravity="bottom|end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="122"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:layout_gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Votes"
+                    android:textColor="@color/colorWhite"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp"
-            />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/thumbnail3"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                />
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/play_button"
+                android:layout_gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/vote_background_orange"
+                android:layout_gravity="bottom|end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="122"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:layout_gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Votes"
+                    android:textColor="@color/colorWhite"
+                    android:textAllCaps="true"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+            </FrameLayout>
+
+
         <ImageView
             android:id="@+id/thumbnail5"
             android:layout_height="wrap_content"
@@ -31,6 +104,7 @@
             android:layout_marginBottom="2dp"
             android:background="@color/colorBlur"
             />
+
     </TableRow>
 
     <TableRow

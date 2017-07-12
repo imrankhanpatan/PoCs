@@ -12,5 +12,7 @@
     <color name="colorMainText">#454545</color>
     <color name="colorProgressBar">#5BB0FF</color>
     <color name="colorTransparent1">#00FFFFFF</color>
+    <color name="colorOrange">#FFA500</color>
+    <color name="colorBlack">#000000</color>
 
 </resources>

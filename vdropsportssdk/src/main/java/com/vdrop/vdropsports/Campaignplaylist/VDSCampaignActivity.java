@@ -79,6 +79,7 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
     private VDSPopupShareDialog vdsPopShareDialog;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -351,6 +352,7 @@ public class VDSCampaignActivity extends AppCompatActivity implements View.OnCli
                 break;
             case VDSGestureDetection.SWIPE_UP:
                 try {
+
                     vdsPopShareDialog = new VDSPopupShareDialog();
                     vdsPopShareDialog.show(fragmentManager,"Share");
                     onVideoPause();
